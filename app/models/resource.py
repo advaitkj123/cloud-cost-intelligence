@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import UTC, datetime
 from enum import Enum
 
 from sqlalchemy import DateTime, Enum as SqlEnum, String, Text
@@ -35,7 +35,7 @@ class Resource(Base):
     instance_type: Mapped[str | None] = mapped_column(String(64), nullable=True)
     cloud_state: Mapped[str | None] = mapped_column(String(64), nullable=True)
     tags_json: Mapped[str] = mapped_column(Text, nullable=False, default="{}")
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, default=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(UTC))
 
     metrics = relationship("Metric", back_populates="resource", cascade="all, delete-orphan")
     cost_records = relationship("CostRecord", back_populates="resource", cascade="all, delete-orphan")

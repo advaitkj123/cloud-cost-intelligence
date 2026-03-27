@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import UTC, datetime
 import random
 
 from app.cloud.aws.cloudwatch_service import CloudWatchMetricPoint, AWSCloudWatchService
@@ -36,7 +36,7 @@ class CloudMetricCollector:
 
         return MetricCreate(
             resource_id=resource.id,
-            timestamp=datetime.utcnow(),
+            timestamp=datetime.now(UTC),
             cpu_usage=round(cpu, 2),
             memory_usage=round(memory, 2),
             requests=requests,

@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 
 from sqlalchemy import desc, func, select
 from sqlalchemy.orm import Session
@@ -53,7 +53,7 @@ class CostRecordRepository:
         return [(row[0], row[1], str(row[2].value), float(row[3])) for row in self.db.execute(stmt).all()]
 
     def trend(self, hours: int = 24) -> list[tuple[datetime, float]]:
-        since = datetime.utcnow() - timedelta(hours=hours)
+        since = datetime.now(UTC) - timedelta(hours=hours)
         stmt = (
             select(CostRecord.timestamp, func.sum(CostRecord.estimated_cost))
             .where(CostRecord.timestamp >= since)

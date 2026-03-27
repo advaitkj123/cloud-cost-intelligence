@@ -1,7 +1,7 @@
 from functools import lru_cache
 from typing import List
 
-from pydantic import AnyHttpUrl, Field
+from pydantic import AnyHttpUrl, Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -11,9 +11,10 @@ class Settings(BaseSettings):
     app_name: str = "Cloud Cost Intelligence Platform"
     environment: str = "development"
     api_prefix: str = ""
-    debug: bool = True
+    debug: bool = False
 
-    database_url: str = "postgresql+psycopg2://postgres:postgres@localhost:5432/cost_intelligence"
+    # Database configuration - REQUIRED, no defaults with credentials
+    database_url: str
 
     cors_origins: List[AnyHttpUrl | str] = Field(default_factory=lambda: ["http://localhost:5173"])
 
@@ -44,6 +45,20 @@ class Settings(BaseSettings):
     default_metric_window: int = 200
     anomaly_min_training_points: int = 12
     isolation_forest_contamination: float = 0.08
+
+    @field_validator("database_url")
+    @classmethod
+    def validate_database_url(cls, v: str) -> str:
+        if not v or not v.startswith("postgresql"):
+            raise ValueError("DATABASE_URL must be set and use postgresql driver")
+        return v
+
+    @field_validator("debug", mode="before")
+    @classmethod
+    def validate_debug(cls, v: bool | str, info) -> bool:
+        if isinstance(v, str):
+            return v.lower() in ("true", "1", "yes")
+        return bool(v)
 
 
 @lru_cache

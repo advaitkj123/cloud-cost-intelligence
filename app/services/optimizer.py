@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import UTC, datetime
 
 from app.cloud.aws.ec2_service import AWSEC2Service
 from app.core.config import get_settings
@@ -52,7 +52,7 @@ class Optimizer:
         action_log = ActionLog(
             resource_id=resource.id,
             action_type=action_type,
-            timestamp=datetime.utcnow(),
+            timestamp=datetime.now(UTC),
             estimated_savings=estimated_savings,
         )
         created = self.action_repository.create(action_log)

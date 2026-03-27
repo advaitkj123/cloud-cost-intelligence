@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import UTC, datetime
 
 from sqlalchemy.orm import Session
 
@@ -118,7 +118,7 @@ class MetricOrchestrator:
 
     def ingest_for_resource(self, resource: Resource, payload: MetricCreate) -> MetricIngestResponse:
         payload.resource_id = resource.id
-        payload.timestamp = payload.timestamp or datetime.utcnow()
+        payload.timestamp = payload.timestamp or datetime.now(UTC)
         return self.ingest_metric(payload)
 
     def sync_aws(self) -> AWSSyncResponse:

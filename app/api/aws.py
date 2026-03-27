@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from botocore.exceptions import BotoCoreError, ClientError, NoCredentialsError
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
