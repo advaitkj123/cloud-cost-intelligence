@@ -15,8 +15,8 @@ settings = get_settings()
 class AWSClientFactory:
     def __init__(self) -> None:
         self._session = boto3.Session(
-            aws_access_key_id=settings.aws_access_key or None,
-            aws_secret_access_key=settings.aws_secret_key or None,
+            aws_access_key_id=settings.aws_access_key_id or None,
+            aws_secret_access_key=settings.aws_secret_access_key or None,
             aws_session_token=settings.aws_session_token or None,
             region_name=settings.aws_region,
         )

@@ -19,9 +19,9 @@ class Settings(BaseSettings):
     cors_origins: List[AnyHttpUrl | str] = Field(default_factory=lambda: ["http://localhost:5173"])
 
     cloud_collector_mode: str = "simulated"
-    aws_access_key: str = ""
-    aws_secret_key: str = ""
-    aws_session_token: str = ""
+    aws_access_key_id: str = Field("", env=["AWS_ACCESS_KEY_ID", "AWS_ACCESS_KEY"])
+    aws_secret_access_key: str = Field("", env=["AWS_SECRET_ACCESS_KEY", "AWS_SECRET_ACCESS_KEY"])
+    aws_session_token: str = Field("", env=["AWS_SESSION_TOKEN", "AWS_SESSION_TOKEN"])
     aws_region: str = "us-east-1"
     aws_pricing_region: str = "us-east-1"
     aws_use_pricing_api: bool = True
